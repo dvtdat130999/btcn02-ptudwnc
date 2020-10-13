@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/btcn02-ptudwnc/static/css/main.5f361e03.chunk.css",
+    "main.js": "/btcn02-ptudwnc/static/js/main.d383f25b.chunk.js",
+    "main.js.map": "/btcn02-ptudwnc/static/js/main.d383f25b.chunk.js.map",
+    "runtime-main.js": "/btcn02-ptudwnc/static/js/runtime-main.a18135cb.js",
+    "runtime-main.js.map": "/btcn02-ptudwnc/static/js/runtime-main.a18135cb.js.map",
+    "static/js/2.7ea91f82.chunk.js": "/btcn02-ptudwnc/static/js/2.7ea91f82.chunk.js",
+    "static/js/2.7ea91f82.chunk.js.map": "/btcn02-ptudwnc/static/js/2.7ea91f82.chunk.js.map",
+    "index.html": "/btcn02-ptudwnc/index.html",
+    "precache-manifest.24ef7155f2613d6c2b6ccf489d35f71d.js": "/btcn02-ptudwnc/precache-manifest.24ef7155f2613d6c2b6ccf489d35f71d.js",
+    "service-worker.js": "/btcn02-ptudwnc/service-worker.js",
+    "static/css/main.5f361e03.chunk.css.map": "/btcn02-ptudwnc/static/css/main.5f361e03.chunk.css.map",
+    "static/js/2.7ea91f82.chunk.js.LICENSE.txt": "/btcn02-ptudwnc/static/js/2.7ea91f82.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/btcn02-ptudwnc/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a18135cb.js",
+    "static/js/2.7ea91f82.chunk.js",
+    "static/css/main.5f361e03.chunk.css",
+    "static/js/main.d383f25b.chunk.js"
+  ]
+}
