@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "f501419dd451ef53caf19c496d04639f",
+    "revision": "309be5bc5da9c2c09c4af0e6d49d819e",
     "url": "/btcn02-ptudwnc/index.html"
   },
   {
-    "revision": "b1ce77a19137ac38215c",
-    "url": "/btcn02-ptudwnc/static/css/main.bb2189c8.chunk.css"
+    "revision": "5d74e043b948dc77da2a",
+    "url": "/btcn02-ptudwnc/static/css/main.fed579d3.chunk.css"
   },
   {
     "revision": "c18dd5fd24f043d48ac7",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/btcn02-ptudwnc/static/js/2.42586a6b.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "b1ce77a19137ac38215c",
-    "url": "/btcn02-ptudwnc/static/js/main.e733cf49.chunk.js"
+    "revision": "5d74e043b948dc77da2a",
+    "url": "/btcn02-ptudwnc/static/js/main.f0d138b5.chunk.js"
   },
   {
     "revision": "8779d0994c6c7b5b6c83",
