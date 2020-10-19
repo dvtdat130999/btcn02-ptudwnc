@@ -1,8 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 function Square(props) {
     //chon loai square tu index.css
     const className='square'+(props.highlight?' highlight':'');
@@ -13,158 +11,140 @@ function Square(props) {
     );
 }
 
-class Board extends React.Component {
-    renderSquare(i) {
-        const winLine=this.props.winLine;//lay winline duoc pass tu Game thanh props cua Board
+function Board(props) {
+    const renderSquare=(i)=>{
+        const winLine=props.winLine;//lay winline duoc pass tu Game thanh props cua Board
         return (
             <Square
                 key={i}
-                value={this.props.squares[i]}
-                onClick={() => this.props.onClick(i)}
+                value={props.squares[i]}
+                onClick={() => props.onClick(i)}
                 //if the current index of squares is included in winline array
                 highlight={winLine&&winLine.includes(i)}
             />
         );
-    }
+    };
 
-    render() {
-        const boardSize=3;
-        let squares=[];
-        for(let i=0;i<boardSize;i++)
+    const boardSize=3;
+    let squares=[];
+    for(let i=0;i<boardSize;i++)
+    {
+        let row=[];
+        for(let j=0;j<boardSize;j++)
         {
-            let row=[];
-            for(let j=0;j<boardSize;j++)
-            {
-                row.push(this.renderSquare(i*boardSize+j));
+            row.push(renderSquare(i*boardSize+j));
 
-            }
-            squares.push(<div key={i} className="board-row">{row} </div>)
         }
-        return (
-            <div>
-              {squares}
-            </div>
-        );
+        squares.push(<div key={i} className="board-row">{row} </div>)
     }
+    return (
+
+        <div>
+            {squares}
+        </div>
+    );
+
 }
 
-class Game extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            history: [
-                {
-                    squares: Array(9).fill(null)
-                }
-            ],
-            stepNumber: 0,
-            xIsNext: true,
-            isAscending:true
-        };
-    }
+function Game (props) {
+    const [history,setHistory]=useState([{ squares: Array(9).fill(null)}]);
+    const [stepNumber,setStepNumber]=useState(0);
+    const [xIsNext,setXIsNext]=useState(true);
+    const [isAscending,setIsAscending]=useState(true);
 
-    handleClick(i) {
-        const history = this.state.history.slice(0, this.state.stepNumber + 1);
-        const current = history[history.length - 1];
+    const handleClick=(i)=>{
+        const historyClone=history.slice(0,stepNumber+1);
+        const current = historyClone[historyClone.length - 1];
         const squares = current.squares.slice();
         if (calculateWinner(squares).winner || squares[i]) {
             return;
         }
-        squares[i] = this.state.xIsNext ? "X" : "O";
-        this.setState({
-            history: history.concat([
-                {
-                    squares: squares,
-                    //vi tri cua buoc vua di
-                    lastMoveSquare:i
-                }
-            ]),
-            stepNumber: history.length,
-            xIsNext: !this.state.xIsNext
-        });
-    }
-
-    jumpTo(step) {
-        this.setState({
-            stepNumber: step,
-            xIsNext: (step % 2) === 0
-        });
-    }
-    handleSortToggle()
-    {
-        this.setState({
-            isAscending:!this.state.isAscending
-        })
-    }
-    render() {
-        const isAscending = this.state.isAscending;
-
-        const history = this.state.history;
-        const stepNum=this.state.stepNumber;
-        const current = history[stepNum];
-
-        const winInfo = calculateWinner(current.squares);
-        const winner = winInfo.winner;
-
-        let moves = history.map((step, move) => {
-            const lastMoveSquare=step.lastMoveSquare;
-            const col=1+lastMoveSquare%3;
-            const row=1+Math.floor(lastMoveSquare/3);
-
-            const desc = move ?
-                `Go to move #${move} (${col}, ${row})` :
-                'Go to game start';
-
-
-            return (
-                <li key={move}>
-                    <button
-                        className={move ===stepNum ? 'move-list-item-selected':''}
-                        onClick={() => this.jumpTo(move)}>{desc}
-                    </button>
-                </li>
-            );
-        });
-
-        let status;
-        if (winner) {
-            status = "Winner: " + winner;
-        }else
-        {
-            if(winInfo.isDraw)
+        squares[i] = xIsNext ? "X" : "O";
+        setHistory(historyClone.concat([
             {
-                status="Draw";
+                squares: squares,
+                //vi tri cua buoc vua di
+                lastMoveSquare:i
             }
-            else
-            {
-                status = "Next player: " + (this.state.xIsNext ? "X" : "O");
+        ]));
+        setStepNumber(historyClone.length);
+        setXIsNext(!xIsNext);
 
-            }
-        }
+    };
 
 
-        if (!isAscending) {
-            moves.reverse();
-        }
+
+    const jumpTo=(step)=> {
+        setStepNumber(step);
+        setXIsNext((step%2)===0);
+    };
+    const handleSortToggle=()=>{
+        setIsAscending(!isAscending);
+    };
+
+    const isAscendingClone=isAscending;
+    const historyClone=history;
+    const stepNumberClone=stepNumber;
+
+    const current = historyClone[stepNumberClone];
+    const winInfo = calculateWinner(current.squares);
+    const winner = winInfo.winner;
+
+    let moves = historyClone.map((step, move) => {
+        const lastMoveSquare=step.lastMoveSquare;
+        const col=1+lastMoveSquare%3;
+        const row=1+Math.floor(lastMoveSquare/3);
+
+        const desc = move ?
+            `Go to move #${move} (${col}, ${row})` :
+            'Go to game start';
+
         return (
-            <div className="game">
-                <div className="game-board">
-                    <Board
-                        squares={current.squares}
-                        onClick={i => this.handleClick(i)}
-                        winLine={winInfo.line}//pass winline thanh props cho Board
-                    />
-                </div>
-                <div className="game-info">
-                    <div>{status}</div>
-                    <button onClick={()=>this.handleSortToggle()}>
-                        {isAscending?'Descending':'Ascending'}
-                    </button>
-                    <ol>{moves}</ol>
-                </div>
-            </div>
+            <li key={move}>
+                <button
+                    className={move ===stepNumberClone? 'move-list-item-selected':''}
+                    onClick={() => jumpTo(move)}>{desc}
+                </button>
+            </li>
         );
+    });
+    let status;
+    if (winner) {
+        status = "Winner: " + winner;
+    }else
+    {
+        if(winInfo.isDraw)
+        {
+            status="Draw";
+        }
+        else
+        {
+            status = "Next player: " + (xIsNext ? "X" : "O");
+
+        }
     }
+
+    if (!isAscendingClone) {
+        moves.reverse();
+    }
+    return (
+        <div className="game">
+            <div className="game-board">
+                <Board
+                    squares={current.squares}
+                    onClick={i => handleClick(i)}
+                    winLine={winInfo.line}//pass winline thanh props cho Board
+                />
+            </div>
+            <div className="game-info">
+                <div>{status}</div>
+                <button onClick={()=>handleSortToggle()}>
+                    {isAscendingClone?'Descending':'Ascending'}
+                </button>
+                <ol>{moves}</ol>
+            </div>
+        </div>
+    );
 }
 
 // ========================================
@@ -208,9 +188,3 @@ function calculateWinner(squares) {
 
     };
 }
-
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
